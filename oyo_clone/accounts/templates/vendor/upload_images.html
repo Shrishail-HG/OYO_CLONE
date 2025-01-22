@@ -1,0 +1,30 @@
+{% extends 'utils/vendor_base.html' %}
+
+{% block start %}
+
+<div class="container mt-5">
+    
+    <div class="row">
+        {% for image in images %}
+            <div class="col-2">
+                <img src="/media/{{image.image}}" style="height: 150px; width: 250px;">
+                <a href="{% url 'delete_images' image.id %}" class="btn btn-danger">DEL</a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="mt-5">
+        {% include "utils/alerts.html"  %}
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="inputGroupFile01">Upload Image</label>
+            <input type="file" name="upload_image" class="form-control" id="inputGroupFile01">
+        </div>
+
+        <button type="submit" class="btn btn-success">Upload</button>
+    </form>
+</div>
+
+{% endblock %}
+
+

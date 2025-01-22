@@ -1,0 +1,45 @@
+{% extends "utils/base.html" %}
+
+{% block start %}
+
+<div class="container">
+    <div class="card-body">
+        <h5 class="card-title">{{hotel.hotel_name}}</h5>
+        Price <span class="badge text-bg-danger">{{hotel.hotel_price}}</span>
+        Offer Price <span class="badge text-bg-success">{{hotel.hotel_offer_price}}</span>
+        <hr>
+        Location: <span>{{hotel.hotel_location}}</span>
+        <p>Details: {{hotel.hotel_description | safe}}</p>
+        
+        <div class="row">
+            {% for image in hotel.hotel_images.all %}
+                <div class="col-2 me-5">
+                    <img src="/media/{{image.image}}" style="height: 150px; width: 250px;">
+                </div>
+            {% endfor %}
+        </div>
+        
+        {% if request.user.is_authenticated %}
+            <form method="POST" class="mt-3">
+                {% include "utils/alerts.html"  %}
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Start Date: </label>
+                    <input type="date" name="start_date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                </div>
+
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">End Date: </label>
+                    <input type="date" name="end_date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                </div>
+
+                <button class="btn btn-danger mt-5">Book Now</button>
+            </form>
+            
+        {% else %}
+            <a href="{% url 'login_page' %}" class="btn btn-success mt-3">Login</a>
+        {% endif %}
+        </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "utils/vendor_base.html" %}
+
+{% block start %}
+
+<div class="container mt-5 pt-5 pb-5">
+  <div class="col-6 mx-auto card shadow p-4" style="border: none;">
+        <h2> Add New Hotel </h2>
+
+        <form method="POST">
+            {% include "utils/alerts.html"  %}
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Hotel Name</label>
+                <input id="email" type="text" name="hotel_name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Hotel Description</label>       
+                <div class="form-floating">
+                    <textarea name="hotel_description" class="form-control" placeholder="Leave a comment here" id="froala"></textarea>
+                    <!-- <textarea name="hotel_description" class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea> -->
+                    <!-- <label for="floatingTextarea">Write Description</label> -->
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Hotel Amenities</label>
+                <select name="amenities" class="form-select form-select-sm"  multiple aria-label="Small select example">
+                    {%  for amenity in amenities %}
+                    <option  value="{{amenity.id}}">{{amenity.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Hotel Price</label>
+                <input id="email" type="text" name="hotel_price" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Hotel Offer Price</label>
+                <input id="email" type="text" name="hotel_offer_price" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+          
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Hotel Location</label>
+                <input id="email" type="text" name="hotel_location" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+  </div>
+
+</div>
+<script>
+  function sendOtp(){
+    var email = document.getElementById('email').value
+    if (email === ""){
+      alert("Email can not be blank")
+      return
+    }
+    
+    window.location.href = `/accounts/send_otp/${email}`
+  }
+</script>
+<script>
+    new FroalaEditor("#froala");
+</script>
+
+{% endblock %}

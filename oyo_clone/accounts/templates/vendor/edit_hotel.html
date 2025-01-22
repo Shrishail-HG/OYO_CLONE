@@ -1,0 +1,80 @@
+{% extends "utils/vendor_base.html" %}
+
+{% block start %}
+
+<div class="container mt-5 pt-5 pb-5">
+  <div class="col-6 mx-auto card shadow p-4" style="border: none;">
+        <h2 style="text-align: center;"> Update Hotel </h2>
+        <hr>
+
+        <label for="current_booking" class="form-label">Current Bookings</label>
+        <ul class="list-group" id="current_booking">
+            {% for booking in hotel.bookings.all %}
+                <li class="list-group-item">{{forloop.counter}}. Start Date: {{booking.booking_start_date}} End Date: {{booking.booking_end_date}}</li>
+            {% endfor %}
+        </ul>
+
+        <form method="POST">
+            {% include "utils/alerts.html"  %}
+            {% csrf_token %}
+
+            <div class="mb-3 mt-3">
+                <label for="exampleInputEmail1" class="form-label">Hotel Name</label>
+                <input id="email" type="text" value="{{hotel.hotel_name}}" name="hotel_name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+
+            <div class="mb-3">
+                <label for="floatingTextarea" class="form-label">Hotel Description</label>
+                <div class="form-floating">
+                    <textarea name="hotel_description" class="form-control" placeholder="Leave a comment here" id="froala">{{hotel.hotel_description}} </textarea>
+                    <!-- <textarea name="hotel_description" class="form-control" placeholder="Leave a comment here" id="floatingTextarea">{{hotel.hotel_description}}</textarea> -->
+                    <!-- <label for="floatingTextarea">Write Description</label> -->
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Hotel Amenities</label>
+                <select name="amenities" class="form-select form-select-sm"  multiple aria-label="Small select example">
+                    {%  for amenity in amenities %}
+                    <option  value="{{amenity.id}}"{% if amenity in hotel.amenities.all %}selected {% endif%}> {{amenity.name}} </option>
+
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Hotel Price</label>
+                <input id="email" type="text" value="{{hotel.hotel_price}}" name="hotel_price" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Hotel Offer Price</label>
+                <input id="email" type="text" value="{{hotel.hotel_offer_price}}" name="hotel_offer_price" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+          
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Hotel Location</label>
+                <input id="email" type="text" value="{{hotel.hotel_location}}" name="hotel_location" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+
+<script>
+  function sendOtp(){
+    var email = document.getElementById('email').value
+    if (email === ""){
+      alert("Email can not be blank")
+      return
+    }
+    
+    window.location.href = `/accounts/send_otp/${email}`
+  }
+</script>
+<script>
+    new FroalaEditor("#froala");
+</script>
+{% endblock %}
